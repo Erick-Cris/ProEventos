@@ -10,9 +10,12 @@ namespace ProEventos.Controllers
         [HttpGet(Name = "Get")]
         public Evento[] Get()
         {
-            Evento[] eventos = { new Evento() { Tema = "Angular", Local = "Uberlândia" } };
+            Evento[] eventos = { 
+            new Evento() { Imagem = "foto.png", Tema = "Angular1", Local = "Uberlândia", Data= DateTime.Now, Quantidade = 1, Lote = "1s", Opcoes = "" },
+            new Evento() { Imagem = "foto2.png", Tema = "Angular2", Local = "Uberlândia", Data= DateTime.Now, Quantidade = 1, Lote = "1s", Opcoes = "" },
+            new Evento() { Imagem = "foto3.jpg", Tema = "Angular3", Local = "Uberlândia", Data= DateTime.Now, Quantidade = 1, Lote = "1s", Opcoes = "" }
+            };
             return eventos;
         }
-
     }
 }

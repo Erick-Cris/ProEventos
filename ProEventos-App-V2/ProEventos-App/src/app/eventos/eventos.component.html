@@ -4,13 +4,14 @@
 <h2>Eventos</h2>
 <hr>
 
-<form>
+<div>
   <div class="row">
-    <input class="col-4 mx-1" type="search" placeholder="Search" aria-label="Search">
+    <input [(ngModel)]="filtroLista" class="col-4 mx-1" type="search" placeholder="Search" aria-label="Search">
     <button class="btn btn-outline-success col-2 mx-1" type="submit">Search</button>
   </div>
 
-</form>
+  Search: {{filtroLista}}
+</div>
 
 <br/>
 
@@ -33,11 +34,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let evento of eventos">
+      <!--Diretivas-->
+      <tr *ngFor="let evento of eventosFiltrados">
         <td>
-          <img [ngClass]="{'collapse': !exibirImagem}" src="assets/Imagens/{{evento.imagem}}" width="100px" height="80px">
-          <!-- <img *ngIf="exibirImagem" src="assets/Imagens/{{evento.imagem}}"  width="100px" height="80px"> -->
+          <!--Properties Binding-->
+          <img [collapse]="exibirImagem" [isAnimated]="true" src="assets/Imagens/{{evento.imagem}}" width="100px" height="80px">
         </td>
+        <!--Interpolacao-->
         <td>{{evento.tema}}</td>
         <td>{{evento.local}}</td>
         <td>{{evento.data}}</td>
