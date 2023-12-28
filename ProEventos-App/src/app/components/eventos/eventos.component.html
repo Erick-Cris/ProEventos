@@ -1,0 +1,75 @@
+
+
+
+<h2>Eventos</h2>
+<hr>
+
+<div>
+  <div class="row">
+    <input [(ngModel)]="filtroLista" class="col-4 mx-1" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success col-2 mx-1" type="submit">Search</button>
+  </div>
+
+  Search: {{filtroLista}}
+</div>
+
+<br/>
+
+<div class="row">
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">
+          <button type="button" class="btn btn-outline-light btn-sm"
+          (click)="alterarImagem()">
+            {{!exibirImagem ? 'exibir' : 'ocultar'}}
+          </button>
+        </th>
+        <th scope="col">Id</th>
+        <th scope="col">Tema</th>
+        <th scope="col">Local</th>
+        <th scope="col">Data</th>
+        <th scope="col">Quantidade Pessoas</th>
+        <th scope="col">Lote</th>
+        <th scope="col">Opções</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!--Diretivas-->
+      <tr *ngFor="let evento of eventosFiltrados">
+        <td>
+          <!--Properties Binding-->
+          <img [collapse]="exibirImagem" [isAnimated]="true" src="assets/Imagens/{{evento.imagemURL}}" width="100px" height="80px">
+        </td>
+        <!--Interpolacao-->
+        <td>{{evento.id}}</td>
+        <td>{{evento.tema}}</td>
+        <td>{{evento.local}}</td>
+        <td>{{evento.dataEvento | DateTimeFormatPipe}}</td>
+        <td>{{evento.qtdPessoas}}</td>
+        <td>{{evento.lotes[0].nome | uppercase}}</td>
+        <td>
+          <button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Editar">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button type="button" class="btn btn-danger btn-sm" tooltip="Excluir" (click)="openModal(template)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!--Modal-->
+<pre class="card card-block card-header">{{message}}</pre>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Deseja realmente excluir?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+  </div>
+</ng-template>
+
+<!--Spinner-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
