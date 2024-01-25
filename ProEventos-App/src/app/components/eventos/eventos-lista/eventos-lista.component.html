@@ -1,0 +1,84 @@
+<div class="card p-3 rounded shadow-sm">
+
+  <div class="d-flex">
+    <div class="flex-fill">
+      <label class="sr-only" for="inlineFormInputGroup">Filtrar por um tema ou local</label>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Search</div>
+        </div>
+        <input [(ngModel)]="filtroLista" type="search" class="form-control" id="inlineFormInputGroup" placeholder="Username">
+      </div>
+    </div>
+
+
+    <div class="">
+      <button type="button" class="btn btn-outline-primary" routerLink="eventos/novo"><i class="fa-solid fa-circle-plus"></i>Novo</button>
+    </div>
+
+
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">
+            <button type="button" class="btn btn-outline-light btn-sm"
+            (click)="alterarImagem()">
+              {{exibirImagem ? 'ocultar' : 'exibir'}}
+            </button>
+          </th>
+          <th scope="col">Id</th>
+          <th scope="col">Tema</th>
+          <th scope="col">Local</th>
+          <th scope="col">Data</th>
+          <th scope="col">Quantidade Pessoas</th>
+          <th scope="col">Lote</th>
+          <th scope="col">Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--Diretivas-->
+        <tr *ngFor="let evento of eventosFiltrados">
+          <td>
+            <!--Properties Binding-->
+            <img [collapse]="!exibirImagem" [isAnimated]="true" src="assets/Imagens/{{evento.imagemURL}}" width="100px" height="80px">
+          </td>
+          <!--Interpolacao-->
+          <td>{{evento.id}}</td>
+          <td>{{evento.tema}}</td>
+          <td>{{evento.local}}</td>
+          <td>{{evento.dataEvento | DateTimeFormatPipe}}</td>
+          <td>{{evento.qtdPessoas}}</td>
+          <td>{{evento.lotes[0].nome | uppercase}}</td>
+          <td>
+            <button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Editar">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" tooltip="Excluir" (click)="openModal(template)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <br/>
+  <hr/>
+</div>
+
+
+
+<!--Modal-->
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Deseja realmente excluir?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+  </div>
+</ng-template>
+
+<!--Spinner-->
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
