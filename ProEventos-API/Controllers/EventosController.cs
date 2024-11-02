@@ -1,23 +1,122 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProEventos.Model;
-using ProEventos_API.Model;
+using ProEventos_Application.Contracts;
+using ProEventos_Application.DTO;
 
 namespace ProEventos.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class EventosController : ControllerBase
     {
-        [HttpGet(Name = "Get")]
-        public Evento[] Get()
+        private readonly IEventoService _eventoService;
+
+        public EventosController(IEventoService eventoService)
         {
-            Evento[] eventos = {
-        new Evento() { ImagemURL = "foto.png", Tema = "Conferência de Tecnologia", Local = "Centro de Convenções de Uberlândia", DataEvento = new DateTime(2023, 12, 31, 8, 0, 0), QtdPessoas = 1000, Lotes = new List<Lote> { new Lote { Nome = "Lote 1", Preco = 100, DataInicio = new DateTime(2023, 10, 1, 0, 0, 0), DataFim = new DateTime(2023, 12, 1, 0, 0, 0) } }, RedesSociais = new List<RedeSocial> { new RedeSocial { Nome = "Facebook", URL = "https://www.facebook.com/conferenciadetecnologia" }, new RedeSocial { Nome = "Twitter", URL = "https://twitter.com/conferenciadetecnologia" } } },
-        new Evento() { ImagemURL = "foto2.png", Tema = "Seminário de Marketing Digital", Local = "Hotel Mercure Uberlândia", DataEvento = new DateTime(2024, 3, 15, 9, 0, 0), QtdPessoas = 200, Lotes = new List<Lote> { new Lote { Nome = "Lote 1", Preco = 50, DataInicio = new DateTime(2024, 1, 1, 0, 0, 0), DataFim = new DateTime(2024, 3, 1, 0, 0, 0) } }, RedesSociais = new List<RedeSocial> { new RedeSocial { Nome = "Facebook", URL = "https://www.facebook.com/seminariomarketingdigital" }, new RedeSocial { Nome = "Instagram", URL = "https://www.instagram.com/seminariomarketingdigital" } } },
-        new Evento() { ImagemURL = "foto3.jpg", Tema = "Workshop de Design Thinking", Local = "Universidade Federal de Uberlândia", DataEvento = new DateTime(2024, 6, 30, 14, 0, 0), QtdPessoas = 50, Lotes = new List<Lote> { new Lote { Nome = "Lote 1", Preco = 20, DataInicio = new DateTime(2024, 4, 1, 0, 0, 0), DataFim = new DateTime(2024, 6, 1, 0, 0, 0) } }, RedesSociais = new List<RedeSocial> { new RedeSocial { Nome = "Facebook", URL = "https://www.facebook.com/workshopdesigthinking" }, new RedeSocial { Nome = "LinkedIn", URL = "https://www.linkedin.com/company/workshopdesigthinking" } } }
-    };
-            return eventos;
+            _eventoService = eventoService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var eventos = await _eventoService.GetAllEventosAsync(true);
+                if (eventos == null) return NoContent();
+
+                return Ok(eventos);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                var evento = await _eventoService.GetEventoByIdAsync(id, true);
+                if (evento == null) return NoContent();
+
+                return Ok(evento);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpGet("{tema}/tema")]
+        public async Task<IActionResult> GetByTema(string tema)
+        {
+            try
+            {
+                var evento = await _eventoService.GetAllEventosByTemaAsync(tema, true);
+                if (evento == null) return NoContent();
+
+                return Ok(evento);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(EventoDTO model)
+        {
+            try
+            {
+                var evento = await _eventoService.AddEventos(model);
+                if (evento == null) return NoContent();
+
+                return Ok(evento);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar adicionar eventos. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, EventoDTO model)
+        {
+            try
+            {
+                var evento = await _eventoService.UpdateEvento(id, model);
+                if (evento == null) return NoContent();
+
+                return Ok(evento);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar atualizar eventos. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var evento = await _eventoService.GetEventoByIdAsync(id, true);
+                if (evento == null) return NoContent();
+
+                return await _eventoService.DeleteEvento(id)
+                       ? Ok(new { message = "Deletado" })
+                       : throw new Exception("Ocorreu um problem não específico ao tentar deletar Evento.");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar deletar eventos. Erro: {ex.Message}");
+            }
+        }
     }
 }

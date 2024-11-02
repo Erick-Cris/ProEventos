@@ -1,6 +1,9 @@
-﻿using ProEventos.Model;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ProEventos_API.Model
+namespace ProEventos_Domain
 {
     public class Lote
     {

@@ -36,7 +36,7 @@
 	<div class="form-row">
 		<div class="form-group col-sm-6">
 			<label for="">Senha:</label>
-			<input class="form-control" type="password" formControlName="senha" placeholder="Digite uma Senha" [ngClass]="{'is-invalid': form.get('senha').errors && form.get('senha').touched}"/>
+			<input class="form-control" type="password" formControlName="senha" placeholder="Digite uma Senha" [ngClass]="cssValidator('senha')"/>
 		  <div *ngIf="form.get('senha').errors?.required && form.get('senha').touched" class="invalid-feedback">Senha Inválida</div>
       <div *ngIf="form.get('senha').errors?.minlength && form.get('senha').touched" class="invalid-feedback">Mínimo de 6 caracteres</div>
     </div>

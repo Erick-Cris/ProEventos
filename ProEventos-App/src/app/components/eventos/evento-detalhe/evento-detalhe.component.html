@@ -11,12 +11,12 @@
     <div class="form-row">
       <div class="form-group col-md-8">
         <label>Local</label>
-        <input type="text" class="form-control" [ngClass]="{'is-invalid': form.get('local').errors && form.get('local').touched}" formControlName="local" placeholder="">
+        <input type="text" class="form-control" [ngClass]="cssValidator('local')" formControlName="local" placeholder="">
         <div class="invalid-feedback"> Local é Origatório</div>
       </div>
       <div class="form-group col-md-4">
         <label>Data e Hora</label>
-        <input type="datetime" class="form-control" formControlName="dataEvento" placeholder="">
+        <input type="text" class="form-control" formControlName="dataEvento" placeholder="" bsDatepicker>
       </div>
     </div>
     <div class="form-row">

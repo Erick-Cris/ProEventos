@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { EventoService } from 'src/app/services/evento.service';
+import { Evento } from 'src/app/models/Evento';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -8,10 +11,17 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class EventoDetalheComponent implements OnInit{
 
-form: any;
-constructor(){}
+constructor(
+  private router: ActivatedRoute,
+  private eventoService: EventoService
+){
+}
+
+evento = {} as Evento;
+form = {} as FormGroup;
 
 ngOnInit(): void {
+  this.carregarEvento();
   this.Validation();
 }
 
@@ -31,6 +41,34 @@ public Validation(): any
 public ResetForm(event: any): any
 {
   event.preventDefault();
+  this.form.reset();
+}
+
+public cssValidator(inputName: any)
+{
+  return {'is-invalid': this.form.get(inputName)?.errors?.['required'] && this.form.get(inputName)?.touched};
+}
+
+public carregarEvento():void
+{
+  const eventoIdParam = this.router.snapshot.paramMap.get('id');
+console.log(eventoIdParam);
+  if(eventoIdParam !== null)
+    {
+      this.eventoService.getEventosById(+eventoIdParam).subscribe(
+        (evento: Evento) => {
+          this.evento = {...evento};
+          this.form.patchValue(this.evento)
+        },
+        (error: any) => {
+          console.error(error);
+        },
+        () => {}
+      );
+    }
+}
+
+public resetForm(): void {
   this.form.reset();
 }
 

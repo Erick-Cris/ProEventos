@@ -18,6 +18,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 //Toastr
 import { ToastrModule } from 'ngx-toastr';
 //Spinner
@@ -71,6 +72,7 @@ import { LoginComponent } from './components/user/login/login.component'
         preventDuplicates:true,
       }
     ),
+    BsDatepickerModule.forRoot(),
     NgxSpinnerModule,
     FormsModule,//Para usar o Two Way Data Binding [(ngModel)]='nomeVariavelTypescript'
     ReactiveFormsModule,

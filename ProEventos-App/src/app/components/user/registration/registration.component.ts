@@ -27,4 +27,9 @@ export class RegistrationComponent implements OnInit{
       confirmeSenha: new FormControl('', Validators.required),
     }, formOptions)
   }
+
+  public cssValidator(inputName: any): any
+  {
+    return {'is-invalid': this.form.get(inputName).errors && this.form.get(inputName).touched}
+  }
 }

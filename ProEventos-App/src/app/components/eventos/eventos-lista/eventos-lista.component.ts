@@ -5,6 +5,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Evento } from 'src/app/models/Evento';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-eventos-lista',
@@ -35,7 +36,12 @@ export class EventosListaComponent implements OnInit{
     this.eventosFiltrados = value ? this.filtrarEventos(value) : this.eventos;
   }
 
-  constructor(private EventoService: EventoService, private modalService: BsModalService, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
+  constructor(
+    private EventoService: EventoService,
+    private modalService: BsModalService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.spinner.show();
@@ -84,5 +90,16 @@ export class EventosListaComponent implements OnInit{
 
   decline(): void {
     this.modalRef?.hide();
+  }
+
+  detalheEvento(id: number): void{
+    this.router.navigate([`eventos/detalhe/${id}`]);
+  }
+
+  public getNomeDoPrimeiroLote(evento: Evento): string {
+    if (evento.lotes && evento.lotes.length > 0) {
+      return evento.lotes[0].nome;
+    }
+    return ''; // Ou outro valor padrão
   }
 }

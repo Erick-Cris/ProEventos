@@ -1,4 +1,9 @@
-﻿namespace ProEventos_API.Model
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ProEventos_Domain
 {
     public class Palestrante
     {
